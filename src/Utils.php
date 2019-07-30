@@ -7,6 +7,11 @@ namespace Phlesk;
  */
 class Utils
 {
+    public static function version()
+    {
+        return "0.1";
+    }
+
     public static function getSubscriptionDomains(\pm_Domain $domain)
     {
         // No way up to the subscription, go through client
