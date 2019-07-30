@@ -173,7 +173,7 @@ class Utils
     public static function contextOut($extension, $previous, $return)
     {
         if ($previous != $extension) {
-            \pm_Log::debug("Switching context from {$extension} to {$module}");
+            \pm_Log::debug("Switching context from {$extension} to {$previous}");
             \pm_Context::reset();
             \pm_Context::init($previous);
         }
