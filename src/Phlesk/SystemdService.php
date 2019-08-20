@@ -2,7 +2,7 @@
 
 namespace Phlesk;
 
-class Service extends \pm_SystemService_Service
+class SystemdService extends \pm_SystemService_Service
 {
     private $name;
     private $service_name;
