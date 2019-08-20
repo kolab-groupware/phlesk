@@ -57,7 +57,7 @@ class Service extends \pm_SystemService_Service
 
     private function systemctl($action)
     {
-        $result = Utils::exec(
+        $result = \Phlesk::exec(
             ["systemctl", "{$action}", "{$this->service_name}"],
             true
         );

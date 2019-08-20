@@ -66,7 +66,7 @@ class Utils
         \pm_Log::debug("Downloading {$tar_file}");
 
         // Download to temp directory and then move, for it to appear atomic
-        $result = self::exec(["wget", "-O{$tmp_file}", "{$url}"], true);
+        $result = \Phlesk::exec(["wget", "-O{$tmp_file}", "{$url}"], true);
 
         // This could also fail because there is no connection to the internet, so not necessarily an error.
         if ($result['code'] != 0) {
@@ -79,7 +79,7 @@ class Utils
 
         // We check again in case the file has been downloaded by someone else meanwhile
         if (!$fm->fileExists($tar_file)) {
-            $result = self::exec(["mv", "{$tmp_file}", "{$tar_file}"]);
+            $result = \Phlesk::exec(["mv", "{$tmp_file}", "{$tar_file}"]);
             if ($result['code'] != 0) {
                 return false;
             }
