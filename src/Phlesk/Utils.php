@@ -8,6 +8,8 @@ class Utils
     /**
         Return the default permissions for an extension.
 
+        This routine will also initialize the default value if not already present.
+
         @return Bool
      */
     public static function defaultPermission()
@@ -19,30 +21,23 @@ class Utils
         } else {
             $permissionConfig = \pm_Settings::get('permission-default', null);
 
-            $domains = \Phlesk::getAllDomains(
-                $main = true,
-                $hosting = true,
-                $mail = true,
-                $filterMethods = ["filterIsDomainActive"]
-            );
+            // Initialize the default if necessary
+            if ($permissionConfig === null) {
+                // If we have no pervious domains then we enable the permission by default
+                $domains = \pm_Domain::getAllDomains(true);
 
-            if (count($domains) == 0) {
-                if ($permissionConfig === null) {
-                    \pm_Settings::set('permission-default', 1);
-                    return true;
+                if (count($domains) == 0) {
+                    $permissionConfig = 1;
                 } else {
-                    return (bool)$permissionConfig;
+                    $permissionConfig = 0;
                 }
-            } else {
-                if ($permissionConfig === null) {
-                    \pm_Settings::set('permission-default', 0);
-                    return false;
-                }
-
-                return (bool)$permissionConfig;
+                \pm_Settings::set('permission-default', $permissionConfig);
             }
+
+            return (bool)$permissionConfig;
         }
     }
+
 
     /**
         Download the extension's application release file from the interwebz.
