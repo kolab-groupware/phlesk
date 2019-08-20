@@ -120,30 +120,22 @@ class Utils
     /**
         Render the contents of a file from a template.
 
-        @param String                $tpl    Template file to use, obtained from extension's var
-                                             directory.
-        @param Array                 $substs Substitution values.
-        @param \pm_ServerFileManager $fm     A file manager, if any
+        @param String                $template    Template file to use
+        @param String                $target      Target file to render to
+        @param Array                 $substitions Substitution values.
+        @param \pm_ServerFileManager $fm          A file manager, if any
 
         @return String
      */
-    public static function renderTemplate($tpl, Array $substs, $fm = null)
+    public static function renderTemplate($template, $target, $substitions, \pm_ServerFileManager $fm)
     {
-        $varDir = rtrim(\pm_Context::getVarDir(), '/');
-
-        if (!$fm) {
-            $fm = new \pm_ServerFileManager();
-        }
-
-        if (!$fm->fileExists($varDir . '/' . $tpl)) {
-            return "";
-        }
-
-        return str_replace(
-            array_keys($substs),
-            array_values($substs),
-            $fm->fileGetContents($varDir . '/' . $tpl)
+        $tpl = $fm->fileGetContents($template);
+        $result = str_replace(
+            array_keys($substitions),
+            array_values($substitions),
+            $tpl
         );
+        $fm->filePutContents($target, $result);
     }
 
     /**
