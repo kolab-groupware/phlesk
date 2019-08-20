@@ -140,17 +140,8 @@ class Utils
      */
     private static function _canManagePlans()
     {
-        $license = new \pm_License();
-        $properties = $license->getProperties();
-
-        $hasHostingPlans = $properties['can-manage-customers'];
-        $hasResellerPlans = $properties['can-manage-resellers'];
-
-        if (!$hasHostingPlans || !$hasResellerPlans) {
-            return false;
-        } else {
-            return true;
-        }
+        $properties = (new \pm_License())->getProperties();
+        return ($properties['can-manage-customers'] && $properties['can-manage-resellers']);
     }
 
     /**
