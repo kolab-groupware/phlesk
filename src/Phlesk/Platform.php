@@ -4,12 +4,13 @@ namespace Phlesk;
 
 class Platform
 {
+    const UNKNOWN     = 'UNKNOWN';
     const CENTOS7     = 'CENTOS7';
     const RHEL7       = 'RHEL7';
     const DEBIAN8     = 'DEBIAN8';
     const DEBIAN9     = 'DEBIAN9';
     const UBUNTU1604  = 'UBUNTU1604';
-    const UBUNTU1810    = 'UBUNTU1810';
+    const UBUNTU1804  = 'UBUNTU1804';
 
     private static function matchPlatform($os, $minimum_version, $maximum_version = null)
     {
@@ -42,23 +43,32 @@ class Platform
         return false;
     }
 
+    public static function getPlatform()
+    {
+        if (self::matchPlatform(\pm_ProductInfo::OS_CENTOS, 7)) {
+            return self::CENTOS7;
+        }
+        if (self::matchPlatform(\pm_ProductInfo::OS_REDHAT, 7)) {
+            return self::RHEL7;
+        }
+        if (self::matchPlatform(\pm_ProductInfo::OS_DEBIAN, 8)) {
+            return self::DEBIAN8;
+        }
+        if (self::matchPlatform(\pm_ProductInfo::OS_DEBIAN, 9)) {
+            return self::DEBIAN9;
+        }
+        if (self::matchPlatform(\pm_ProductInfo::OS_UBUNTU, '16.04')) {
+            return self::UBUNTU1604;
+        }
+        if (self::matchPlatform(\pm_ProductInfo::OS_UBUNTU, '18.04')) {
+            return self::UBUNTU1804;
+        }
+        \pm_Log::err("Unknown platform.");
+        return self::UNKNOWN;
+    }
+
     public static function isPlatform($platform)
     {
-        switch ($platform) {
-            case self::CENTOS7:
-                return self::matchPlatform(\pm_ProductInfo::OS_CENTOS, 7);
-            case self::RHEL7:
-                return self::matchPlatform(\pm_ProductInfo::OS_REDHAT, 7);
-            case self::DEBIAN8:
-                return self::matchPlatform(\pm_ProductInfo::OS_DEBIAN, 8);
-            case self::DEBIAN9:
-                return self::matchPlatform(\pm_ProductInfo::OS_DEBIAN, 9);
-            case self::UBUNTU1604:
-                return self::matchPlatform(\pm_ProductInfo::OS_UBUNTU, '16.04');
-            case self::UBUNTU1810:
-                return self::matchPlatform(\pm_ProductInfo::OS_UBUNTU, '18.10');
-        }
-        \pm_Log::err("Unknown platform: {$platform}");
-        return false;
+        return (self::getPlatform() == $platform);
     }
 }
