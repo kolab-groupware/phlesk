@@ -1,6 +1,6 @@
 <?php
 /**
-    Extending \pm_Domain.
+    Basic extension-level functions, to assist multiple extensions working in unison.
 
     PHP Version 5
 
@@ -15,7 +15,17 @@
 namespace Phlesk;
 
 /**
-    Extending \pm_Domain
+    The `\Phlesk\Extension` class is intended to provide extensions with information about and
+    interface in to other extensions.
+
+    This allows an extension such as `kolab` to see if an extension `seafile` is active, has its
+    software installed, and is enabled for a feasible domain (has hosting and mail service).
+
+    Example usage:
+
+    ```php
+    $seafileEnabled = \Phlesk\Extension::isEnabled('seafile', $domain);
+    ```
 
     PHP Version 5
 
@@ -32,9 +42,13 @@ class Extension
     /**
         Verify an extension is active.
 
+        NOTE: Currently attempts to use `\pm_Extension`, which was introduced in later Plesk
+        versions, and otherwise falls back on to detecting whether or not a class
+        `Modules_Myextension_Utils` exists.
+
         @param String $target The name of the extension to check.
 
-        @return Bool|NULL
+        @return Bool
      */
     public static function isActive($target)
     {
@@ -60,11 +74,11 @@ class Extension
     }
 
     /**
-        Verify the extension $target is enabled for \pm_Domain $domain.
+        Verify the extension `$target` is enabled for `\pm_Domain $domain`.
 
-        This includes verifying the extension $target is active, that the source extension is
-        installed, verifying the target extension has its software installed, and that the target
-        extension permission is enabled.
+        This includes verifying the extension `$target` is active, that the source extension is
+        installed, verifying the target extension has its software installed, and that any the
+        target extension's permissions are enabled.
 
         @param String     $target The name of the extension.
         @param \pm_Domain $domain The domain
