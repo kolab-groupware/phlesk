@@ -224,4 +224,24 @@ class Utils
             }
         }
     }
+
+    /**
+        Check if in power user mode.
+
+        @return true if in power user mode
+     */
+    public static function isPoweruserModeEnabled()
+    {
+        $result = \pm_ApiRpc::getService()->call(
+            '<server><get><gen_info/></get></server>',
+            'admin'
+        );
+
+        foreach ($result->server->get->result->gen_info as $gen_info) {
+            if ((string)$gen_info->mode == "poweruser") {
+                return true;
+            }
+        }
+        return false;
+    }
 }
