@@ -60,7 +60,7 @@ class RPC
                 <get>
                     <gen_info/>
                 </get>
-            </server>'
+            </server>
         ";
         $result = $this->_rpc->call($request, 'admin');
 
