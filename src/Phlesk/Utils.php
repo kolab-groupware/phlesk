@@ -1,8 +1,6 @@
 <?php
-// phpcs:ignore
 namespace Phlesk;
 
-// phpcs:ignore
 class Utils
 {
     /**
