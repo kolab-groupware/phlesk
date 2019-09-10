@@ -52,4 +52,23 @@ class RPC
             'webmail-certificate' => $result->{'webmail-certificate'},
         ];
     }
+
+    public function isPoweruserModeEnabled()
+    {
+        $request = "
+            <server>
+                <get>
+                    <gen_info/>
+                </get>
+            </server>'
+        ";
+        $result = $this->_rpc->call($request, 'admin');
+
+        foreach ($result->server->get->result->gen_info as $gen_info) {
+            if ((string)$gen_info->mode == "poweruser") {
+                return true;
+            }
+        }
+        return false;
+    }
 }
