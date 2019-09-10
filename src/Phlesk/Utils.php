@@ -114,7 +114,7 @@ class Utils
         $url = $baseUrl . $filename;
 
         $fm = new \pm_ServerFileManager();
-        return self::downloadFile($url, $varDir, $filename, $fm);
+        return self::downloadFile($url, \pm_Context::getVarDir(), $filename, $fm);
     }
 
     /**
