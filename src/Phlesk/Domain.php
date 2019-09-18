@@ -114,6 +114,18 @@ class Domain
     }
 
     /**
+        Determine if the domain is the primary domain for a subscription.
+
+        @param \pm_Domain $domain The domain to test.
+
+        @return boolean
+     */
+    public static function isPrimary(\pm_Domain $domain)
+    {
+        return ($domain->getGuid() == \Phlesk::getPrimaryDomain($domain->getGuid())->getGuid());
+    }
+
+    /**
         Determine if the domain is a wildcard domain.
 
         @param \pm_Domain $domain The domain to test.
