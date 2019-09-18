@@ -114,6 +114,18 @@ class Domain
     }
 
     /**
+        Determine if the domain is a wildcard domain.
+
+        @param \pm_Domain $domain
+
+        @return boolean
+     */
+    public static function isWildcard(\pm_Domain $domain)
+    {
+        return substr($domain->getName(), 0, 1) == '_';
+    }
+
+    /**
         List the user accounts for this domain.
 
         @param \pm_Domain $domain  The domain to list users for.
