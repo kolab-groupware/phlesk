@@ -116,7 +116,7 @@ class Domain
     /**
         Determine if the domain is a wildcard domain.
 
-        @param \pm_Domain $domain
+        @param \pm_Domain $domain The domain to test.
 
         @return boolean
      */
