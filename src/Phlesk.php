@@ -203,6 +203,32 @@ class Phlesk
     }
 
     /**
+        Obtain a list of domains accessible in the current session.
+
+        @param Bool  $primaryOnly   Only return domains that are primary domains for a
+                                    subscription.
+
+        @return Array Returns a list of \pm_Domain objects.
+     */
+    private static function getAccessibleDomains($primaryOnly = true)
+    {
+        if (!\pm_Session::isExist()) {
+            return pm_Domain::getAllDomains($primaryOnly);
+        }
+
+        $client = \pm_Session::getClient();
+        if ($client->isAdmin()) {
+            return \pm_Domain::getAllDomains($primaryOnly);
+        } elseif ($client->isReseller()) {
+            return array_filter(\pm_Domain::getAllDomains($primaryOnly), function ($domain) {
+                return $client->hasAccessToDomain($domain->getId());
+            });
+        } else {
+            return \pm_Domain::getDomainsByClient($client, $primaryOnly);
+        }
+    }
+
+    /**
         Get a \pm_Domain using its GUID.
 
         @param String $domain_guid The GUID of the domain to find and return.
