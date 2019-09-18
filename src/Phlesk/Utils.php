@@ -36,56 +36,6 @@ class Utils
         }
     }
 
-
-    /**
-       Download the file into $target_directory
-
-       This routine ensures the file appears atomically,
-       by downloading to a temporary file in $target_directory and renaming at the end.
-
-       @param String                $url              The url to download.
-       @param String                $target_directory The target directory to download to.
-       @param String                $file_name        The target file name.
-       @param \pm_ServerFileManager $fm               A file manager, if any
-
-       @return true if the tarball is available, false if not
-     */
-    public static function downloadFile($url, $target_directory, $file_name, \pm_ServerFileManager $fm)
-    {
-        $target_dir = rtrim($target_directory, '/');
-
-        $tar_file = "{$target_dir}/{$file_name}";
-        $tmp_file = tempnam($target_dir, $file_name);
-
-        if ($fm->fileExists($tar_file)) {
-            return true;
-        }
-
-        \pm_Log::debug("Downloading {$tar_file}");
-
-        // Download to temp directory and then move, for it to appear atomic
-        $result = \Phlesk::exec(["wget", "-O{$tmp_file}", "{$url}"], true);
-
-        // This could also fail because there is no connection to the internet, so not necessarily an error.
-        if ($result['code'] != 0) {
-            \pm_Log::info(
-                "Failed to download {$file_name}: '" . $result['stderr']
-            );
-
-            return false;
-        }
-
-        // We check again in case the file has been downloaded by someone else meanwhile
-        if (!$fm->fileExists($tar_file)) {
-            $result = \Phlesk::exec(["mv", "{$tmp_file}", "{$tar_file}"]);
-            if ($result['code'] != 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     /**
         Download the extension's application release file from the interwebz.
 
@@ -111,28 +61,64 @@ class Utils
 
         $url = $baseUrl . $filename;
 
+        $targetDir = \Phlesk\Context::getVarDir();
+
+        $tarFile = "{$targetDir}/{$filename}";
+        $tmpFile = tempnam($targetDir, $filename);
+
         $fm = new \pm_ServerFileManager();
-        return self::downloadFile($url, \pm_Context::getVarDir(), $filename, $fm);
+
+        if ($fm->fileExists($tarFile)) {
+            return true;
+        }
+
+        \pm_Log::debug("Downloading {$tarFile}");
+
+        // Download to temp directory and then move, for it to appear atomic
+        $result = \Phlesk::exec(["wget", "-O{$tmpFile}", "{$url}"], true);
+
+        // This could also fail because there is no connection to the internet, so not necessarily
+        // an error.
+        if ($result['code'] != 0) {
+            \pm_Log::info(
+                "Failed to download {$filename}: '" . $result['stderr']
+            );
+
+            return false;
+        }
+
+        // We check again in case the file has been downloaded by someone else meanwhile
+        if (!$fm->fileExists($tarFile)) {
+            $result = \Phlesk::exec(["mv", "{$tmpFile}", "{$tarFile}"]);
+            if ($result['code'] != 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
         Render the contents of a file from a template.
 
-        @param String                $template    Template file to use
-        @param String                $target      Target file to render to
-        @param Array                 $substitions Substitution values.
-        @param \pm_ServerFileManager $fm          A file manager, if any
+        @param String $template    Template file to use
+        @param String $target      Target file to render to
+        @param Array  $substitions Substitution values.
 
         @return String
      */
-    public static function renderTemplate($template, $target, $substitions, \pm_ServerFileManager $fm)
+    public static function renderTemplate($template, $target, $substitions)
     {
+        $fm = new \pm_ServerFileManager();
+
         $tpl = $fm->fileGetContents($template);
+
         $result = str_replace(
             array_keys($substitions),
             array_values($substitions),
             $tpl
         );
+
         $fm->filePutContents($target, $result);
     }
 

@@ -14,16 +14,23 @@ class Install
         if (!$taskman) {
             $taskman = new \pm_LongTask_Manager();
         }
+
         $tasks = $taskman->getTasks(['task_install']);
+
         // Avoid starting multiple install tasks
         foreach ($tasks as $task) {
             $status = $task->getStatus();
-            \pm_Log::debug("Found an existing install task with status" . var_export($status, true));
+
+            \pm_Log::debug(
+                "Found an existing install task with status" . var_export($status, true)
+            );
+
             if ($status == \pm_LongTask_Task::STATUS_RUNNING) {
                 \pm_Log::info("Found an existing running task");
                 return true;
             }
         }
+
         return false;
     }
 
@@ -51,16 +58,19 @@ class Install
     public static function startInstallTask($task)
     {
         if (self::isInstalled()) {
-            \pm_Log::info("Mattermost is already installed, not installing again.");
+            \pm_Log::info("Extension is already installed, not installing again.");
             return false;
         }
+
         $taskman = new \pm_LongTask_Manager();
+
         if (self::isInstalling($taskman)) {
-            \pm_Log::info("Mattermost is currently installing.");
+            \pm_Log::info("Extension is currently installing.");
             return false;
         }
 
         $taskman->start($task);
+
         return true;
     }
 
