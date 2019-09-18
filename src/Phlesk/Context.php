@@ -31,6 +31,16 @@ namespace Phlesk;
 class Context extends \pm_Context
 {
     /**
+        Ensure that the most right-hand side slash is stripped from the parent function.
+
+        @return string
+     */
+    public static function getVarDir()
+    {
+        return rtrim(parent::getVarDir(), DIRECTORY_SEPARATOR);
+    }
+
+    /**
         Switch the context to target.
         Note this function returns the current context, and you should save it off in order to
         switch back.
