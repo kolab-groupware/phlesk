@@ -5,13 +5,13 @@ namespace Phlesk;
 class SystemdService extends \pm_SystemService_Service
 {
     private $_name;
-    private $_service_name;
+    private $_serviceName;
     private $_id;
 
-    public function __construct($_name, $_service_name, $_id)
+    public function __construct($_name, $_serviceName, $_id)
     {
         $this->_name = $_name;
-        $this->_service_name = $_service_name;
+        $this->_serviceName = $_serviceName;
         $this->_id = $_id;
     }
 
@@ -27,38 +27,38 @@ class SystemdService extends \pm_SystemService_Service
 
     public function isConfigured()
     {
-        return $this->systemctl("is-enabled") == 0;
+        return $this->_systemctl("is-enabled") == 0;
     }
 
     public function isInstalled()
     {
-        return $this->systemctl("status") != 4;
+        return $this->_systemctl("status") != 4;
     }
 
     public function isRunning()
     {
-        return $this->systemctl("status") == 0;
+        return $this->_systemctl("status") == 0;
     }
 
     public function onRestart()
     {
-        $this->systemctl("restart");
+        $this->_systemctl("restart");
     }
 
     public function onStart()
     {
-        $this->systemctl("start");
+        $this->_systemctl("start");
     }
 
     public function onStop()
     {
-        $this->systemctl("stop");
+        $this->_systemctl("stop");
     }
 
-    private function systemctl($action)
+    private function _systemctl($action)
     {
         $result = \Phlesk::exec(
-            ["systemctl", "{$action}", "{$this->_service_name}"],
+            ["systemctl", "{$action}", "{$this->_serviceName}"],
             true
         );
 

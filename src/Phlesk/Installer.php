@@ -6,6 +6,8 @@ class Installer
 {
     /**
         Explicitly invoked if not already installed
+
+        @return void
      */
     public function install()
     {
@@ -18,6 +20,8 @@ class Installer
 
     /**
         Automatically invoked on before extension installation
+
+        @return void
      */
     public function preInstall()
     {
