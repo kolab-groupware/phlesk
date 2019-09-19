@@ -210,7 +210,7 @@ class Phlesk
 
         @return Array Returns a list of \pm_Domain objects.
      */
-    private static function getAccessibleDomains($primaryOnly = true)
+    public static function getAccessibleDomains($primaryOnly = true)
     {
         if (!\pm_Session::isExist()) {
             return pm_Domain::getAllDomains($primaryOnly);
