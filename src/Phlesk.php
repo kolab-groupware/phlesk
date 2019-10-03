@@ -220,7 +220,7 @@ class Phlesk
         if ($client->isAdmin()) {
             return \pm_Domain::getAllDomains($primaryOnly);
         } elseif ($client->isReseller()) {
-            return array_filter(\pm_Domain::getAllDomains($primaryOnly), function ($domain) {
+            return array_filter(\pm_Domain::getAllDomains($primaryOnly), function ($domain) use ($client) {
                 return $client->hasAccessToDomain($domain->getId());
             });
         } else {
