@@ -12,7 +12,7 @@ class Utils
      */
     public static function defaultPermission()
     {
-        if (!self::_canManagePlans()) {
+        if (!self::canManagePlans()) {
             // If we can't manage plans, the permission is always true.
             \pm_Settings::set('permission-default', 1);
             return true;
@@ -93,7 +93,7 @@ class Utils
      */
     public static function downloadRelease()
     {
-        self::_waitForCompleteInstallation();
+        self::waitForCompleteInstallation();
 
         $baseUrl = "https://mirror.kolabenterprise.com/pub/releases/";
 
@@ -144,7 +144,7 @@ class Utils
 
         @return Bool
      */
-    private static function _canManagePlans()
+    private static function canManagePlans()
     {
         $properties = (new \pm_License())->getProperties();
         return ($properties['can-manage-customers'] && $properties['can-manage-resellers']);
@@ -155,7 +155,7 @@ class Utils
 
         @return NULL
      */
-    private static function _waitForCompleteInstallation()
+    private static function waitForCompleteInstallation()
     {
         $post_installing = \pm_Settings::get('installing', null) == "true";
 

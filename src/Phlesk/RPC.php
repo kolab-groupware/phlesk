@@ -16,21 +16,21 @@ namespace Phlesk;
 
 class RPC
 {
-    private $_rpc;
+    private $rpc;
 
     public function __construct()
     {
-        $this->_rpc = \pm_ApiRpc::getService();
+        $this->rpc = \pm_ApiRpc::getService();
     }
 
     public function requestMailServiceForDomain($domainID)
     {
-        $prefs = $this->_siteMailPrefs($domainID);
+        $prefs = $this->siteMailPrefs($domainID);
 
         return $prefs['mailservice'];
     }
 
-    private function _siteMailPrefs($domainID)
+    private function siteMailPrefs($domainID)
     {
         $request = "
             <mail>
@@ -42,7 +42,7 @@ class RPC
             </mail>
         ";
 
-        $result = $this->_rpc->call($request)->mail->get_prefs->result->prefs;
+        $result = $this->rpc->call($request)->mail->get_prefs->result->prefs;
 
         return [
             'mailservice'         => $result->{'mailservice'} == "true",
@@ -62,7 +62,7 @@ class RPC
                 </get>
             </server>
         ";
-        $result = $this->_rpc->call($request, 'admin');
+        $result = $this->rpc->call($request, 'admin');
 
         foreach ($result->server->get->result->gen_info as $gen_info) {
             if ((string)$gen_info->mode == "poweruser") {

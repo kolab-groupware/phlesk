@@ -28,6 +28,7 @@
     @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
     @link      https://pxts.ch
  */
+// phpcs:ignore
 class Phlesk
 {
     const VERSION = '0.1';
@@ -102,7 +103,7 @@ class Phlesk
         @return Array Result of command execution, including 'code', 'stderr', 'stdout'.
      */
     public static function exec(
-        Array $command,
+        array $command,
         $tolerant = false,
         pm_LongTask_Task $task = null
     ) {

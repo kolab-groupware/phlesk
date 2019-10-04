@@ -12,7 +12,7 @@ class Platform
     const UBUNTU1604  = 'UBUNTU1604';
     const UBUNTU1804  = 'UBUNTU1804';
 
-    private static function _matchPlatform($os, $minVer, $maxVer = null)
+    private static function matchPlatform($os, $minVer, $maxVer = null)
     {
         \pm_Log::debug("Checking: {$os} {$minVer}");
 
@@ -45,22 +45,22 @@ class Platform
 
     public static function getPlatform()
     {
-        if (self::_matchPlatform(\pm_ProductInfo::OS_CENTOS, 7)) {
+        if (self::matchPlatform(\pm_ProductInfo::OS_CENTOS, 7)) {
             return self::CENTOS7;
         }
-        if (self::_matchPlatform(\pm_ProductInfo::OS_REDHAT, 7)) {
+        if (self::matchPlatform(\pm_ProductInfo::OS_REDHAT, 7)) {
             return self::RHEL7;
         }
-        if (self::_matchPlatform(\pm_ProductInfo::OS_DEBIAN, 8)) {
+        if (self::matchPlatform(\pm_ProductInfo::OS_DEBIAN, 8)) {
             return self::DEBIAN8;
         }
-        if (self::_matchPlatform(\pm_ProductInfo::OS_DEBIAN, 9)) {
+        if (self::matchPlatform(\pm_ProductInfo::OS_DEBIAN, 9)) {
             return self::DEBIAN9;
         }
-        if (self::_matchPlatform(\pm_ProductInfo::OS_UBUNTU, '16.04')) {
+        if (self::matchPlatform(\pm_ProductInfo::OS_UBUNTU, '16.04')) {
             return self::UBUNTU1604;
         }
-        if (self::_matchPlatform(\pm_ProductInfo::OS_UBUNTU, '18.04')) {
+        if (self::matchPlatform(\pm_ProductInfo::OS_UBUNTU, '18.04')) {
             return self::UBUNTU1804;
         }
         \pm_Log::err("Unknown platform.");
