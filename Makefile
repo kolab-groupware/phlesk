@@ -9,9 +9,9 @@ docker-clean:
 	@docker rm -f phpstan $(REDIRECT) 2>/dev/null || :
 
 lint: docker-clean
-	@docker run --name phpstan -t --rm -v $(PWD):/app/phlesk/ phpstan:latest
+	@docker run --name phpstan -t --rm -v $(PWD):/app/phlesk/ kolab/phpstan:latest
 
 stylecheck: docker-clean
-	@docker run --name phpstan -t --rm -v $(PWD):/app/phlesk/ phpstan:latest \
+	@docker run --name phpstan -t --rm -v $(PWD):/app/phlesk/ kolab/phpstan:latest \
 		/composer/vendor/bin/phpcs -s /app/phlesk/src/
 
