@@ -1,4 +1,5 @@
 <?php
+
 /**
     Basic extension-level functions, to assist multiple extensions working in unison.
 

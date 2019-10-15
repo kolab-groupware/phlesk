@@ -1,4 +1,5 @@
 <?php
+
 namespace Phlesk;
 
 class Utils

@@ -1,4 +1,5 @@
 <?php
+
 /**
     Extending \pm_Domain.
 

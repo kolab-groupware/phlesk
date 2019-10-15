@@ -1,4 +1,5 @@
 <?php
+
 /**
     Welcome to Phlesk.
 
@@ -28,6 +29,7 @@
     @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
     @link      https://pxts.ch
  */
+
 // phpcs:ignore
 class Phlesk
 {

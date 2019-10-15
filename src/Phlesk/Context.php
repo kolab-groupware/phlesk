@@ -1,4 +1,5 @@
 <?php
+
 /**
     Provide a stable, consistent and shared means to manage the \pm_Context for extensions, by
     extending \pm_Context.

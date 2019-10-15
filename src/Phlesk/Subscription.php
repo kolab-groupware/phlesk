@@ -1,4 +1,5 @@
 <?php
+
 /**
     Shortcut to addressing "subscriptions".
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
     Provide a standardized extension of \pm_ActionLog
 
