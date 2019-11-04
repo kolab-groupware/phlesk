@@ -314,25 +314,35 @@ class Phlesk
     }
 
     /**
-        Get the primary domain for any domain.
-
-        Basically, maybe, the primary subscription domain. Terminology is confusing.
-
-        @param String $domain_guid The GUID for the domain to retain the primary domain for.
-
-        @return \pm_Domain|NULL
+     * Get the primary domain for any domain.
+     *
+     * Gets the \pm_Domain that is the "primary" domain for a subscription.
+     *
+     * @param string $domain_guid The GUID for the domain to retain the primary domain for.
+     *
+     * @return \pm_Domain
+     *
+     * @throws \pm_Exception Should $domain_guid not belong to any (existing) domain (anymore), or
+     *                       should no primary domain exist for the subscription, then an exception
+     *                       is thrown here to avoid extensions continuing with null.
      */
     public static function getPrimaryDomain($domain_guid)
     {
-        $domains = \Phlesk::getAllDomains(true);
+        $domain = \Phlesk::getDomainByGuid($domain_guid);
 
-        foreach ($domains as $domain) {
-            if ($domain->getGuid() == $domain_guid) {
-                return $domain;
-            }
+        if (!$domain) {
+            throw new \pm_Exception("No domain for GUID {$domain_guid} (anymore).");
         }
 
-        return null;
+        $primaryDomain = \Phlesk\Subscription::getDomains($domain, $primaryOnly = true);
+
+        if (!$primaryDomain) {
+            throw new \pm_Exception(
+                "Subscription for domain {$domain->getName()} does not have a primary domain"
+            );
+        }
+
+        return $primaryDomain;
     }
 
     /**
