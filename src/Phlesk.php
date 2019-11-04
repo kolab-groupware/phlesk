@@ -342,7 +342,7 @@ class Phlesk
             );
         }
 
-        return array_shift(array_values($primaryDomain));
+        return $primaryDomain[0];
     }
 
     /**
