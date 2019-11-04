@@ -336,13 +336,13 @@ class Phlesk
 
         $primaryDomain = \Phlesk\Subscription::getDomains($domain, $primaryOnly = true);
 
-        if (!$primaryDomain) {
+        if (empty($primaryDomain)) {
             throw new \pm_Exception(
                 "Subscription for domain {$domain->getName()} does not have a primary domain"
             );
         }
 
-        return $primaryDomain;
+        return array_shift(array_values($primaryDomain));
     }
 
     /**
