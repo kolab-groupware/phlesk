@@ -44,15 +44,25 @@ class Subscription
     {
         // No way up to the subscription, go through client
         $client = $domain->getClient();
-        $homepath = $domain->getHomePath();
+
+        // can only get home path on domain with hosting
+        if ($domain->hasHosting()) {
+            $homepath = $domain->getHomePath();
+        }
 
         $subscription_domains = [];
         $domains = \pm_Domain::getDomainsByClient($client, $primaryOnly);
 
         foreach ($domains as $_domain) {
-            if ($_domain->getHomePath() == $homepath) {
-                $subscription_domains[] = $_domain;
+            if ($_domain->hasHosting()) {
+                if ($_domain->getHomePath() == $homepath) {
+                    $subscription_domains[] = $_domain;
+                }
             }
+        }
+
+        if (empty($subscription_domains)) {
+            return [$domain];
         }
 
         return $subscription_domains;
