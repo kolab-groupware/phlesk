@@ -41,6 +41,42 @@ namespace Phlesk;
 class Extension
 {
     /**
+     * Obtain the permissions for an extension.
+     *
+     * @return array
+     */
+    public static function getPermissions($target)
+    {
+        $permissions = [];
+
+        if (!self::isActive($target)) {
+            \pm_Log::debug("Extension {$target} is not active or not available.");
+            return $permissions;
+        }
+
+        $module = \Phlesk\Context::in($target);
+
+        $extension = ucfirst(strtolower($target));
+
+        $hasPermission = false;
+
+        // Attempt to include the file that defines the permission class.
+        @include_once "/usr/local/psa/admin/plib/modules/{$target}/hooks/Permissions.php";
+
+        if (class_exists("Modules_{$extension}_Permissions")) {
+            if (is_callable(["Modules_{$extension}_Permissions", "getPermissions"], false, $c)) {
+                $permissions = $c();
+            } else {
+                \pm_Log::debug("No callable Modules_{$extension}_Permissions::getPermissions()");
+            }
+        } else {
+            \pm_Log::debug("Could not find class Modules_{$extension}_Permissions");
+        }
+
+        return \Phlesk\Context::out($module, array_keys($permissions));
+    }
+
+    /**
         Verify an extension is active.
 
         NOTE: Currently attempts to use `\pm_Extension`, which was introduced in later Plesk

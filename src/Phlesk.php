@@ -123,15 +123,15 @@ class Phlesk
     }
 
     /**
-        Obtain a list of domains.
-
-        @param Bool  $primaryOnly   Only return domains that are primary domains for a
-                                    subscription.
-        @param Bool  $hosting       Only return domains that have hosting enabled.
-        @param Bool  $mail          Only return domains that have mail service enabled.
-        @param Array $filterMethods An optional function to apply as a filter.
-
-        @return Array Returns a list of \pm_Domain objects.
+     * Obtain a list of domains that the current session (if any) is able to access.
+     *
+     * @param bool  $primaryOnly   Only return domains that are primary domains for a
+     *                             subscription.
+     * @param bool  $hosting       Only return domains that have hosting enabled.
+     * @param bool  $mail          Only return domains that have mail service enabled.
+     * @param array $filterMethods An optional function to apply as a filter.
+     *
+     * @return Array Returns a list of \pm_Domain objects.
      */
     public static function getAllDomains(
         $primaryOnly = false,

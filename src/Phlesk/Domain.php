@@ -123,7 +123,16 @@ class Domain
      */
     public static function isPrimary(\pm_Domain $domain)
     {
-        return ($domain->getGuid() == \Phlesk::getPrimaryDomain($domain->getGuid())->getGuid());
+        $guid = $domain->getGuid();
+        $primary = \Phlesk::getPrimaryDomain($guid);
+
+        if ($primary) {
+            return ($guid = $primary->getGuid());
+        }
+
+        \pm_Log::debug("Domain {$domain->getName()} isn't a primary?");
+
+        return false;
     }
 
     /**
