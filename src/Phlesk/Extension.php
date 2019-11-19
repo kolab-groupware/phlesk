@@ -1,42 +1,42 @@
 <?php
 
 /**
-    Basic extension-level functions, to assist multiple extensions working in unison.
-
-    PHP Version 5
-
-    @category  PHP
-    @package   Phlesk
-    @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
-    @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
-    @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
-    @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
-    @link      https://pxts.ch
+ * Basic extension-level functions, to assist multiple extensions working in unison.
+ *
+ * PHP Version 5
+ *
+ * @category  PHP
+ * @package   Phlesk
+ * @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
+ * @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
+ * @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
+ * @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
+ * @link      https://pxts.ch
  */
 namespace Phlesk;
 
 /**
-    The `\Phlesk\Extension` class is intended to provide extensions with information about and
-    interface in to other extensions.
-
-    This allows an extension such as `kolab` to see if an extension `seafile` is active, has its
-    software installed, and is enabled for a feasible domain (has hosting and mail service).
-
-    Example usage:
-
-    ```php
-    $seafileEnabled = \Phlesk\Extension::isEnabled('seafile', $domain);
-    ```
-
-    PHP Version 5
-
-    @category  PHP
-    @package   Phlesk
-    @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
-    @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
-    @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
-    @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
-    @link      https://pxts.ch
+ * The `\Phlesk\Extension` class is intended to provide extensions with information about and
+ * interface in to other extensions.
+ *
+ * This allows an extension such as `kolab` to see if an extension `seafile` is active, has its
+ * software installed, and is enabled for a feasible domain (has hosting and mail service).
+ *
+ * Example usage:
+ *
+ * ```php
+ * $seafileEnabled = \Phlesk\Extension::isEnabled('seafile', $domain);
+ * ```
+ *
+ * PHP Version 5
+ *
+ * @category  PHP
+ * @package   Phlesk
+ * @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
+ * @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
+ * @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
+ * @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
+ * @link      https://pxts.ch
  */
 class Extension
 {
@@ -77,15 +77,15 @@ class Extension
     }
 
     /**
-        Verify an extension is active.
-
-        NOTE: Currently attempts to use `\pm_Extension`, which was introduced in later Plesk
-        versions, and otherwise falls back on to detecting whether or not a class
-        `Modules_Myextension_Utils` exists.
-
-        @param String $target The name of the extension to check.
-
-        @return Bool
+     * Verify an extension is active.
+     *
+     * NOTE: Currently attempts to use `\pm_Extension`, which was introduced in later Plesk
+     * versions, and otherwise falls back on to detecting whether or not a class
+     * `Modules_Myextension_Utils` exists.
+     *
+     * @param String $target The name of the extension to check.
+     *
+     * @return Bool
      */
     public static function isActive($target)
     {
@@ -111,16 +111,16 @@ class Extension
     }
 
     /**
-        Verify the extension `$target` is enabled for `\pm_Domain $domain`.
-
-        This includes verifying the extension `$target` is active, that the source extension is
-        installed, verifying the target extension has its software installed, and that any the
-        target extension's permissions are enabled.
-
-        @param String     $target The name of the extension.
-        @param \pm_Domain $domain The domain
-
-        @return Bool
+     * Verify the extension `$target` is enabled for `\pm_Domain $domain`.
+     *
+     * This includes verifying the extension `$target` is active, that the source extension is
+     * installed, verifying the target extension has its software installed, and that any the
+     * target extension's permissions are enabled.
+     *
+     * @param String     $target The name of the extension.
+     * @param \pm_Domain $domain The domain
+     *
+     * @return Bool
      */
     public static function isEnabled($target, \pm_Domain $domain)
     {
@@ -177,11 +177,11 @@ class Extension
     }
 
     /**
-        Verify the extension has installed its software.
-
-        @param String $target The name of the extension to check.
-
-        @return Bool
+     * Verify the extension has installed its software.
+     *
+     * @param String $target The name of the extension to check.
+     *
+     * @return Bool
      */
     public static function isInstalled($target)
     {

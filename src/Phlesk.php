@@ -1,33 +1,33 @@
 <?php
 
 /**
-    Welcome to Phlesk.
-
-    Hope you enjoy ;-)
-
-    PHP Version 5
-
-    @category  PHP
-    @package   Phlesk
-    @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
-    @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
-    @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
-    @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
-    @link      https://pxts.ch
+ * Welcome to Phlesk.
+ *
+ * Hope you enjoy ;-)
+ *
+ * PHP Version 5
+ *
+ * @category  PHP
+ * @package   Phlesk
+ * @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
+ * @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
+ * @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
+ * @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
+ * @link      https://pxts.ch
  */
 
 /**
-    Class documentation.
-
-    PHP Version 5
-
-    @category  PHP
-    @package   Phlesk
-    @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
-    @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
-    @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
-    @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
-    @link      https://pxts.ch
+ * Main short-form Phlesk functions.
+ *
+ * PHP Version 5
+ *
+ * @category  PHP
+ * @package   Phlesk
+ * @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
+ * @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
+ * @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
+ * @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
+ * @link      https://pxts.ch
  */
 
 // phpcs:ignore
@@ -36,21 +36,21 @@ class Phlesk
     const VERSION = '0.1';
 
     /**
-        Switch the context from the current \pm_Context to the target context.
-
-        Note it only switches context if necessary.
-
-        Use this to ensure extensions calling functions of one another do not incidentally
-        operate in the incorrect context.
-
-        Note: It should be considered the responsibility of the target extension to ensure the
-        context in which it operates is the correct context, and at or near the end of the
-        function, it is also responsible for switching the context back to the original.
-
-        @param String $target The string representation of the target context, i.e. "kolab",
-                              "seafile", etc.
-
-        @return String The name of the current context.
+     * Switch the context from the current \pm_Context to the target context.
+     *
+     * Note it only switches context if necessary.
+     *
+     * Use this to ensure extensions calling functions of one another do not incidentally
+     * operate in the incorrect context.
+     *
+     * Note: It should be considered the responsibility of the target extension to ensure the
+     * context in which it operates is the correct context, and at or near the end of the
+     * function, it is also responsible for switching the context back to the original.
+     *
+     * @param string $target The string representation of the target context, i.e. "kolab",
+     *                       "seafile", etc.
+     *
+     * @return string The name of the current context.
      */
     public static function contextIn($target)
     {
@@ -58,36 +58,36 @@ class Phlesk
     }
 
     /**
-        Switch out of the current \pm_Context back to an original context.
-        Note it only switches context if necessary.
-
-        Use in conjunction with \Phlesk::contextIn() which returns a string representing the
-        original context:
-
-        ```php
-          function foo() {
-              $module = \Phlesk::contextIn("mymodule");
-              // (... do work in the mymodule context ...)
-              \Phlesk::contextOut($module);
-          }
-        ```
-
-        You may specify an intended return value, such that you can reduce the code footprint:
-
-        ```php
-          function foo() {
-              $module = \Phlesk::contextIn("mymodule");
-              // (... do work in the mymodule context ...)
-              $result = $retval >= 1 ? FALSE : TRUE;
-              return \Phlesk::contextOut($module, $result);
-          }
-        ```
-
-        @param String $target The string representation of the target context, hopefully the
-                              correct one to switch back to after your work is done.
-        @param Mixed  $return Return this value after switching contexts.
-
-        @return Mixed Returns the value of $return.
+     * Switch out of the current \pm_Context back to an original context.
+     * Note it only switches context if necessary.
+     *
+     * Use in conjunction with \Phlesk::contextIn() which returns a string representing the
+     * original context:
+     *
+     * ```php
+     * function foo() {
+     *     $module = \Phlesk::contextIn("mymodule");
+     *     // (... do work in the mymodule context ...)
+     *     \Phlesk::contextOut($module);
+     * }
+     * ```
+     *
+     * You may specify an intended return value, such that you can reduce the code footprint:
+     *
+     * ```php
+     * function foo() {
+     *     $module = \Phlesk::contextIn("mymodule");
+     *     // (... do work in the mymodule context ...)
+     *     $result = $retval >= 1 ? FALSE : TRUE;
+     *     return \Phlesk::contextOut($module, $result);
+     * }
+     * ```
+     *
+     * @param string $target The string representation of the target context, hopefully the
+     *                       correct one to switch back to after your work is done.
+     * @param mixed  $return Return this value after switching contexts.
+     *
+     * @return mixed Returns the value of $return.
      */
     public static function contextOut($target, $return = null)
     {
@@ -95,21 +95,18 @@ class Phlesk
     }
 
     /**
-        Execute a command with error control.
-
-        @param Array            $command  The command and arguments to execute.
-        @param Bool             $tolerant Whether or not the failure of execution is fatal
+     * Execute a command with error control.
+     *
+     * @param array             $command  The command and arguments to execute.
+     * @param boolean           $tolerant Whether or not the failure of execution is fatal
                                           (default).
-        @param pm_LongTask_Task $task     The long-running task that is being executed, if any.
-
-        @return Array Result of command execution, including 'code', 'stderr', 'stdout'.
+     * @param \pm_LongTask_Task $task     The long-running task that is being
+     *                                                      executed, if any.
+     *
+     * @return array Result of command execution, including 'code', 'stderr', 'stdout'.
      */
-    public static function exec(
-        array $command,
-        $tolerant = false,
-        pm_LongTask_Task $task = null
-    ) {
-
+    public static function exec($command, $tolerant = false, $task = null)
+    {
         $module = \Phlesk\Context::getModuleId();
 
         $result = \pm_ApiCli::callSbin("{$module}-execute", $command, \pm_ApiCli::RESULT_FULL);
@@ -206,12 +203,12 @@ class Phlesk
     }
 
     /**
-        Obtain a list of domains accessible in the current session.
-
-        @param Bool  $primaryOnly   Only return domains that are primary domains for a
-                                    subscription.
-
-        @return Array Returns a list of \pm_Domain objects.
+     * Obtain a list of domains accessible in the current session.
+     *
+     * @param Bool  $primaryOnly   Only return domains that are primary domains for a
+     *                             subscription.
+     *
+     * @return Array Returns a list of \pm_Domain objects.
      */
     public static function getAccessibleDomains($primaryOnly = true)
     {
@@ -232,11 +229,11 @@ class Phlesk
     }
 
     /**
-        Get a \pm_Domain using its GUID.
-
-        @param String $domain_guid The GUID of the domain to find and return.
-
-        @return \pm_Domain|NULL
+     * Get a \pm_Domain using its GUID.
+     *
+     * @param String $domain_guid The GUID of the domain to find and return.
+     *
+     * @return \pm_Domain|NULL
      */
     public static function getDomainByGuid($domain_guid)
     {
@@ -253,17 +250,17 @@ class Phlesk
     }
 
     /**
-        Get a \pm_Domain by its numeric identifier.  Really, you could just use:
-
-        ```php
-           $domain = new \pm_Domain($domain_id);
-        ```
-
-        However, using an ID for a non-existent domain will throw an exception.
-
-        @param Int $domain_id The ID of the domain to return.
-
-        @return \pm_Domain|NULL
+     * Get a \pm_Domain by its numeric identifier.  Really, you could just use:
+     *
+     * ```php
+     *    $domain = new \pm_Domain($domain_id);
+     * ```
+     *
+     * However, using an ID for a non-existent domain will throw an exception.
+     *
+     * @param Int $domain_id The ID of the domain to return.
+     *
+     * @return \pm_Domain|NULL
      */
     public static function getDomainById($domain_id)
     {
@@ -280,11 +277,11 @@ class Phlesk
     }
 
     /**
-        Get a \pm_Domain by its name.
-
-        @param String $domain_name The name of the domain to return.
-
-        @return \pm_Domain|NULL
+     * Get a \pm_Domain by its name.
+     *
+     * @param String $domain_name The name of the domain to return.
+     *
+     * @return \pm_Domain|NULL
      */
     public static function getDomainByName($domain_name)
     {
@@ -301,11 +298,11 @@ class Phlesk
     }
 
     /**
-        Get a name for a \pm_Domain by its ID.
-
-        @param Int $domain_id The ID for the domain to obtain the name for.
-
-        @return String
+     * Get a name for a \pm_Domain by its ID.
+     *
+     * @param Int $domain_id The ID for the domain to obtain the name for.
+     *
+     * @return String
      */
     public static function getDomainNameByID($domain_id)
     {
@@ -346,11 +343,11 @@ class Phlesk
     }
 
     /**
-        Confirm or deny the domain in question is the primary domain.
-
-        @param String $domain_guid The GUID for the domain to confirm/deny its primacy of.
-
-        @return Bool
+     * Confirm or deny the domain in question is the primary domain.
+     *
+     * @param String $domain_guid The GUID for the domain to confirm/deny its primacy of.
+     *
+     * @return Bool
      */
     public static function isPrimaryDomain($domain_guid)
     {

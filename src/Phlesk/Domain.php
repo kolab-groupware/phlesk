@@ -1,41 +1,70 @@
 <?php
 
 /**
-    Extending \pm_Domain.
-
-    PHP Version 5
-
-    @category  PHP
-    @package   Phlesk
-    @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
-    @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
-    @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
-    @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
-    @link      https://pxts.ch
+ * Supplement functions of \pm_Domain.
+ *
+ * PHP Version 5
+ *
+ * @category  PHP
+ * @package   Phlesk
+ * @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
+ * @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
+ * @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
+ * @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
+ * @link      https://pxts.ch
  */
 namespace Phlesk;
 
 /**
-    Extending \pm_Domain
-
-    PHP Version 5
-
-    @category  PHP
-    @package   Phlesk
-    @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
-    @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
-    @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
-    @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
-    @link      https://pxts.ch
+ * Supplemental facilities for \pm_Domain.
+ *
+ * PHP Version 5
+ *
+ * @category  PHP
+ * @package   Phlesk
+ * @author    Jeroen van Meeuwen (Kolab Systems) <vanmeeuwen@kolabsys.com>
+ * @author    Christian Mollekopf (Kolab Systems) <mollekopf@kolabsys.com>
+ * @copyright 2019 Kolab Systems AG <contact@kolabsystems.com>
+ * @license   GPLv3 (https://www.gnu.org/licenses/gpl.txt)
+ * @link      https://pxts.ch
  */
 class Domain
 {
     /**
-        Disable the integration between the current context and the target module.
-
-        @param \pm_Domain $domain The domain to disable integration for.
-
-        @return NULL
+     * Emit an event notification letting other extensions know the current context is being
+     * disabled for the domain.
+     *
+     * Uses a `\pm_ActionLog` submission, for which the providing extension will require definition
+     * of, in `plib/hooks/ActionLog.php`, at minimum:
+     *
+     * ```php
+     * <?php
+     * class Modules_Foo_ActionLog extends \Phlesk\Hook\ActionLog {}
+     * ```
+     *
+     * For other extensions to listen to and receive the event notification, they will need to
+     * include in their `Modules_Bar_EventListener->filterActions()` result, for example;
+     *
+     * ```php
+     * <?php
+     * class Modules_Bar_EventListener implements EventListener
+     * {
+     *     public function filterActions()
+     *     {
+     *         return [
+     *             (...)
+     *             'ext_foo_disable_domain',
+     *             (...)
+     *         ];
+     *     }
+     * }
+     * ```
+     *
+     * @param \pm_Domain $domain The domain to disable integration for.
+     *
+     * @return null
+     *
+     * @see \Phlesk\Hook\ActionLog
      */
     public static function disableIntegration(\pm_Domain $domain)
     {
@@ -46,11 +75,40 @@ class Domain
     }
 
     /**
-        Enable the integration between the current context and the target module.
-
-        @param \pm_Domain $domain The domain to enable integration for.
-
-        @return NULL
+     * Emit an event notification letting other extensions know the current context is being
+     * disabled for the domain.
+     *
+     * Uses a `\pm_ActionLog` submission, for which the providing extension will require definition
+     * of, in `plib/hooks/ActionLog.php`, at minimum:
+     *
+     * ```php
+     * <?php
+     * class Modules_Foo_ActionLog extends \Phlesk\Hook\ActionLog {}
+     * ```
+     *
+     * For other extensions to listen to and receive the event notification, they will need to
+     * include in their `Modules_Bar_EventListener->filterActions()` result, for example;
+     *
+     * ```php
+     * <?php
+     * class Modules_Bar_EventListener implements EventListener
+     * {
+     *     public function filterActions()
+     *     {
+     *         return [
+     *             (...)
+     *             'ext_foo_enable_domain',
+     *             (...)
+     *         ];
+     *     }
+     * }
+     * ```
+     *
+     * @param \pm_Domain $domain The domain to enable integration for.
+     *
+     * @return null
+     *
+     * @see \Phlesk\Hook\ActionLog
      */
     public static function enableIntegration(\pm_Domain $domain)
     {
@@ -61,14 +119,14 @@ class Domain
     }
 
     /**
-        Determine if a domain actually has hosting.
-
-        Needed because \pm_Domain::hasHosting() does not accurately reflect the then-current
-        status.
-
-        @param \pm_Domain $domain Determine whether the domain currently has hosting.
-
-        @return Boolean
+     * Determine if a domain actually has hosting.
+     *
+     * Needed because `\pm_Domain::hasHosting()` does not accurately reflect the then-current
+     * status.
+     *
+     * @param \pm_Domain $domain Determine whether the domain currently has hosting.
+     *
+     * @return boolean
      */
     public static function hasHosting(\pm_Domain $domain)
     {
@@ -97,15 +155,14 @@ class Domain
         return $domain->hasHosting();
     }
 
-
     /**
-        Determine if a domain actually has mail service enabled.
-
-        Needed because the function doesn't exist for \pm_Domain.
-
-        @param \pm_Domain $domain The domain for which to determine mail service availability
-
-        @return Boolean
+     * Determine if a domain actually has mail service enabled.
+     *
+     * Needed because the function doesn't exist for \pm_Domain.
+     *
+     * @param \pm_Domain $domain The domain for which to determine mail service availability
+     *
+     * @return Boolean
      */
     public static function hasMailService(\pm_Domain $domain)
     {
@@ -115,11 +172,11 @@ class Domain
     }
 
     /**
-        Determine if the domain is the primary domain for a subscription.
-
-        @param \pm_Domain $domain The domain to test.
-
-        @return boolean
+     * Determine if the domain is the primary domain for a subscription.
+     *
+     * @param \pm_Domain $domain The domain to test.
+     *
+     * @return boolean
      */
     public static function isPrimary(\pm_Domain $domain)
     {
@@ -136,11 +193,11 @@ class Domain
     }
 
     /**
-        Determine if the domain is a wildcard domain.
-
-        @param \pm_Domain $domain The domain to test.
-
-        @return boolean
+     * Determine if the domain is a wildcard domain.
+     *
+     * @param \pm_Domain $domain The domain to test.
+     *
+     * @return boolean
      */
     public static function isWildcard(\pm_Domain $domain)
     {
@@ -148,12 +205,12 @@ class Domain
     }
 
     /**
-        List the user accounts for this domain.
-
-        @param \pm_Domain $domain  The domain to list users for.
-        @param Bool       $decrypt Decrypt the password.
-
-        @return Array
+     * List the user accounts for this domain.
+     *
+     * @param \pm_Domain $domain  The domain to list users for.
+     * @param Bool       $decrypt Decrypt the password.
+     *
+     * @return array
      */
     public static function listUsers(\pm_Domain $domain, $decrypt = false)
     {

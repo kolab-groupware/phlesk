@@ -2,9 +2,19 @@
 
 namespace Phlesk\Hook;
 
+/**
+ * Provide a generically applicable set of statistics in answer to Plesk's CustomInfo requests.
+ *
+ * Provide `plib/hooks/CustomInfo.php` in your extension:
+ *
+ * ```php
+ * <?php
+ * class Modules_Foo_CustomInfo extends \Phlesk\Hook\CustomInfo {}
+ * ```
+ */
 class CustomInfo implements \pm_Hook_Interface
 {
-    /*
+    /**
      * Hook in for providing our statistics in JSON format.
      *
      * @return string
@@ -14,7 +24,7 @@ class CustomInfo implements \pm_Hook_Interface
         return json_encode($this->getStatistics());
     }
 
-    /*
+    /**
      * Hook in for the extension to provide statistics that it knows about.
      *
      * * The version of the extension installed.
@@ -140,7 +150,7 @@ class CustomInfo implements \pm_Hook_Interface
         return $stats;
     }
 
-    /*
+    /**
      * Returns whether the extension considers itself installed (true) or not (false).
      *
      * If not applicable, returns null.
@@ -152,7 +162,7 @@ class CustomInfo implements \pm_Hook_Interface
         return \Phlesk\Extension::isInstalled(\Phlesk\Context::getModuleId());
     }
 
-    /*
+    /**
      * Returns whether the extension is licenced (true) or not (false).
      *
      * If not applicable, returns null.
@@ -177,7 +187,7 @@ class CustomInfo implements \pm_Hook_Interface
         return $instance::isLicensed();
     }
 
-    /*
+    /**
      * Return the number of licenses.
      *
      * @return int|string
@@ -200,7 +210,7 @@ class CustomInfo implements \pm_Hook_Interface
         return $instance::licenseLimit();
     }
 
-    /*
+    /**
      * Returns the update configuration for this system.
      *
      * @return int
@@ -292,7 +302,7 @@ class CustomInfo implements \pm_Hook_Interface
         return $uc;
     }
 
-    /*
+    /**
      * Returns the version number for the extension.
      *
      * @return string
