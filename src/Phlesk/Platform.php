@@ -254,7 +254,8 @@ class Platform
                     '--assume-yes',
                     '-o', 'Dpkg::Options::=--force-confdef',
                     '-o', 'Dpkg::Options::=--force-confold',
-                    '-o', 'APT::Install-Recommends=no'
+                    '-o', 'APT::Install-Recommends=no',
+                    'install'
                 ];
 
             case self::MAIPO:
