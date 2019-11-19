@@ -159,7 +159,7 @@ class Package
 
             case \pm_ProductInfo::OS_DEBIAN:
             case \pm_ProductInfo::OS_UBUNTU:
-                $result = \Phlesk::exec(['apt-cache', 'search', $package], true);
+                $result = \Phlesk::exec(['apt-cache', 'show', $package], true);
                 break;
 
             default:
