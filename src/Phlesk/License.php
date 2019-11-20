@@ -38,7 +38,7 @@ class License
             self::renewDate();
         }
 
-        $now = new DateTime("now");
+        $now = new \DateTime("now");
 
         if ($now > self::$expiryDate) {
             \pm_Log::debug("License expired.");
@@ -239,12 +239,12 @@ class License
 
         $body = openssl_x509_parse(self::$license['key-body']);
 
-        $dt = new DateTime("@{$body['validFrom_time_t']}");
-        $dt->add(new DateInterval('P1M'));
+        $dt = new \DateTime("@{$body['validFrom_time_t']}");
+        $dt->add(new \DateInterval('P1M'));
 
         // Ensure we display the correct expiry/renewal for longer lasting licenses (such as faker)
-        $dte = new DateTime("@{$body['validTo_time_t']}");
-        $dte->sub(new DateInterval('P14D'));
+        $dte = new \DateTime("@{$body['validTo_time_t']}");
+        $dte->sub(new \DateInterval('P14D'));
 
         self::$renewalDate = $dte > $dt ? $dte : $dt;
 
@@ -274,7 +274,7 @@ class License
 
         $body = openssl_x509_parse(self::$license['key-body']);
 
-        self::$expiryDate = new DateTime("@{$body['validTo_time_t']}");
+        self::$expiryDate = new \DateTime("@{$body['validTo_time_t']}");
 
         return self::$expiryDate->format('F j, Y');
     }
@@ -322,9 +322,9 @@ class License
      */
     public static function getLicense()
     {
-        $license = pm_License::getAdditionalKey(pm_Context::getModuleId());
-
         $module = \Phlesk\Context::getModuleId();
+        $license = \pm_License::getAdditionalKey($module);
+
         $extension = ucfirst(strtolower($module));
         $filterClass = "Modules_{$extension}_LicenseFaker";
 
